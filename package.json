@@ -1,8 +1,14 @@
 {
   "name": "vs-ai-coding-helper-by-codeplusdev",
-  "displayName": "VS AI Coding Helper by CodePlusDev",
+  "displayName": "CodePlusDev VS AI Coding Helper",
   "description": "A Coding helper VS Code plugin that create, analyze or update your code.",
   "version": "0.0.1",
+  "publisher": "CodePlusDev",
+  "icon": "images/codeplusdev-ai-coding-helper-icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codeplusdev/vscode-ai-coding-helper.git"
+  },
   "engines": {
     "vscode": "^1.86.0"
   },
@@ -10,29 +16,29 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:extension.findGptComments"
+    "onCommand:vs-ai-coding-helper-by-codeplusdev.findGptComments"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "configuration": {
-      "title": "GPT-3 Integration",
+      "title": "CodePlusDev VS AI Coding Helper Settings",
       "properties": {
-        "gpt3integration.openaiApiKey": {
+        "vs-ai-coding-helper-by-codeplusdev.openaiApiKey": {
           "type": "string",
           "default": "",
-          "description": "OpenAI API Key for accessing GPT-3 services"
+          "description": "OpenAI API Key for accessing GPT services"
         },
-        "gpt3integration.gptModel": {
+        "vs-ai-coding-helper-by-codeplusdev.gptModel": {
           "type": "string",
           "default": "gpt-3.5-turbo",
-          "description": "OpenAI API Key for accessing GPT-3 services"
+          "description": "OpenAI API Model name"
         }
       }
     },
     "commands": [
       {
-        "command": "extension.findGptComments",
-        "title": "Insert GPT Code"
+        "command": "vs-ai-coding-helper-by-codeplusdev.findGptComments",
+        "title": "Select the code to be inspected and replaced by GPT"
       }
     ]
   },
