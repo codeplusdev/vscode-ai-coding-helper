@@ -35,6 +35,18 @@ For the most current list of known issues, please refer to the issues section of
 
 Initial release of "CodePlusDev VS AI Coding Helper".
 
+### 0.0.2 - 8 February 2024
+
+#### Added
+
+- Programming language information of the currently edited file is now included.
+- Code of the currently edited file and the current line information are now added to the prompt system.
+
+#### Fixed
+
+- Resolved a critical prompt issue that was affecting functionality.
+- Reduced code clutter with the addition of new lines to improve readability and organization.
+
 ---
 
 ## Following Extension Guidelines
