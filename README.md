@@ -1,18 +1,20 @@
 # CodePlusDev VS AI Coding Helper README
 
-This is the README for the extension "CodePlusDev VS AI Coding Helper", a powerful tool designed to enhance your coding experience by integrating AI-powered code suggestions directly into Visual Studio Code. This extension leverages OpenAI's GPT services to scan your code for specific comment markers (`// GPT: prompt`) and provides code enhancements or additions based on the context provided in the prompt. Whether you have existing code that needs improvement or you're starting from scratch, this extension aims to boost your productivity and code quality.
+This is the README for the extension "CodePlusDev VS AI Coding Helper", a powerful tool designed to enhance your coding experience by integrating AI-powered code suggestions directly into Visual Studio Code. This extension leverages OpenAI's GPT services to provide code enhancements or additions based on the context you provide through a dedicated prompt box. This new method allows for a more seamless and efficient way to receive coding suggestions, whether you are improving existing code or starting from scratch.
 
 ## Features
 
 "CodePlusDev VS AI Coding Helper" comes with several key features that make coding faster, more efficient, and more intuitive:
 
-- **AI-Powered Code Suggestions:** Automatically generates code suggestions by analyzing comments starting with `// GPT: prompt` in your source code.
-- **Context-Aware Replacements:** If code is selected, it sends the prompt along with the selected code to GPT services and updates the code with the AI's suggestion.
-- **Seamless Integration:** Works within your VS Code environment, providing inline code suggestions for an improved coding workflow.
+- **Direct Prompt Input:** Utilize a dedicated prompt box to directly input your coding queries or requests, eliminating the need for inserting specific comment markers in your code. This approach allows for a streamlined and more intuitive interaction with the AI.
+
+- **Context-Aware Replacements:** When you have code selected, the extension sends your input from the prompt box along with the selected code to GPT services. It then intelligently updates your code with the AI's suggestion, integrating the new code block seamlessly.
+
+- **Seamless Integration:** Designed to work within your VS Code environment, this extension provides inline code suggestions right where you need them, enhancing your productivity and code quality without disrupting your development workflow.
 
 ![Update feature](https://codeplus.dev/wp-content/uploads/2024/02/feature-update.png)
 
-> Tip: To best showcase your extension, consider using animations to demonstrate its capabilities. Short, focused animations can effectively illustrate how your extension works in action.
+> Tip: To showcase the capabilities of "CodePlusDev VS AI Coding Helper" effectively, consider using short, focused animations. These can serve as an excellent way to demonstrate how the extension streamlines the coding process with its AI-powered features.
 
 ## Requirements
 
@@ -31,9 +33,10 @@ For the most current list of known issues, please refer to the issues section of
 
 ## Release Notes
 
-### 0.0.1
+### 0.0.3 (HOTFIX) - 8 February 2024
 
-Initial release of "CodePlusDev VS AI Coding Helper".
+- Hotfix: Fixed a sorting error that prevented selected text operation.
+- Added: The current file character limit is limited to 4000.
 
 ### 0.0.2 - 8 February 2024
 
@@ -46,6 +49,10 @@ Initial release of "CodePlusDev VS AI Coding Helper".
 
 - Resolved a critical prompt issue that was affecting functionality.
 - Reduced code clutter with the addition of new lines to improve readability and organization.
+
+### 0.0.1
+
+Initial release of "CodePlusDev VS AI Coding Helper".
 
 ---
 

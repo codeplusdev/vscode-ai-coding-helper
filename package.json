@@ -2,7 +2,7 @@
   "name": "vs-ai-coding-helper-by-codeplusdev",
   "displayName": "CodePlusDev VS AI Coding Helper",
   "description": "A Coding helper VS Code plugin that create, analyze or update your code.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "CodePlusDev",
   "icon": "images/codeplusdev-ai-coding-helper-icon.png",
   "repository": {
@@ -38,7 +38,7 @@
     "commands": [
       {
         "command": "vs-ai-coding-helper-by-codeplusdev.findGptComments",
-        "title": "Select the code to be inspected and replaced by GPT"
+        "title": "CodePlusDev AI Coding Helper: Insert AI suggestion prompt"
       }
     ]
   },

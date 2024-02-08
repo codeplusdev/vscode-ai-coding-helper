@@ -36,14 +36,14 @@ export function activate(context: vscode.ExtensionContext) {
 			let commentLine = editor?.selection?.start.line ?? cursor_pos;
 			let endLine = editor?.selection?.end.line ?? cursor_pos;
 
-			if (cursor_pos > 0) {
-				lineInfo = `Now you will write the desired code on lines ${cursor_pos}. `;
-			} else if (commentLine > 0 || endLine > 0) {
+			if (commentLine > 0 || endLine > 0) {
 				lineInfo = `You are currently editing the given code between lines ${commentLine} and ${endLine}. `;
+			} else if (cursor_pos > 0) {
+				lineInfo = `Now you will write the desired code on lines ${cursor_pos}. `;
 			}
 
 			let fileEditInfo = 'writing a';
-			
+
 			if (text.length < 2) {
 				fileEditInfo = 'editing below';
 			}
@@ -52,7 +52,7 @@ export function activate(context: vscode.ExtensionContext) {
 				{
 					"role": "system",
 					"content": `You are currently ${fileEditInfo} ${languageId} code. ${lineInfo}
-						  Comments and documentation should be written in English. Write only the code that is requested or make edits if they are requested.\n${text}`
+						  Comments and documentation should be written in English. Write only the code that is requested or make edits if they are requested.\n${text.substring(0, 4000)}`
 				}
 			];
 
@@ -104,13 +104,13 @@ export function activate(context: vscode.ExtensionContext) {
 				console.log(completion);
 
 				await editor.edit(editBuilder => {
-					if (cursor_pos > 0) {
-						editBuilder.insert(new vscode.Position(cursor_pos, 0), completion);
-					} else {
+					if (commentLine > 0) {
 						const start = new vscode.Position(commentLine, 0);
-						const end = document.lineAt(endLine).range.end;
+						const end = new vscode.Position(endLine + 1, 0);
 						const range = new vscode.Range(start, end);
 						editBuilder.replace(range, completion);
+					} else {
+						editBuilder.insert(new vscode.Position(cursor_pos, 0), completion);
 					}
 
 				});
