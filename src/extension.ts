@@ -14,14 +14,22 @@ export function activate(context: vscode.ExtensionContext) {
 		const text = document.getText();
 		const config = vscode.workspace.getConfiguration('vs-ai-coding-helper-by-codeplusdev');
 		const openaiApiKey = config.get<string>('openaiApiKey');
-		const gptModel = config.get<string>('gptModel') ?? 'gpt-3.5-turbo-instruct';
+		const maxCodeReference = config.get<number>('maxCodeReference');
+		const gptModel = config.get<string>('gptModel');
 
 		if (!openaiApiKey) {
 			vscode.window.showWarningMessage('OpenAI API key is not set. Please configure it in the extension settings.');
 			return;
 		}
 
-		let languageId = editor.document.languageId;
+		const languageId = editor.document.languageId;
+
+		// 1: LF 2: CRLF
+		const nl = editor.document.eol === 1 ? '\n' : '\r\n';
+
+		const nLn = (t = 1) => {
+			return nl.repeat(t);
+		};
 
 		const prompt = await vscode.window.showInputBox({
 			prompt: "Please enter your GPT prompt"
@@ -36,23 +44,23 @@ export function activate(context: vscode.ExtensionContext) {
 			let commentLine = editor?.selection?.start.line ?? cursor_pos;
 			let endLine = editor?.selection?.end.line ?? cursor_pos;
 
-			if (commentLine > 0 || endLine > 0) {
+			if (commentLine < endLine && endLine > 0) {
 				lineInfo = `You are currently editing the given code between lines ${commentLine} and ${endLine}. `;
 			} else if (cursor_pos > 0) {
 				lineInfo = `Now you will write the desired code on lines ${cursor_pos}. `;
 			}
 
-			let fileEditInfo = 'writing a';
+			let fileEditInfo = `You are currently writing a full documented ${languageId} code.`;
 
-			if (text.length < 2) {
-				fileEditInfo = 'editing below';
+			if (text.length > 0) {
+				fileEditInfo = `You are currently editing below ${languageId} code. Please document the code well. ${lineInfo}So, write only the requested code that replaced with it.`;
 			}
 
 			let messages = [
 				{
 					"role": "system",
-					"content": `You are currently ${fileEditInfo} ${languageId} code. ${lineInfo}
-						  Comments and documentation should be written in English. Write only the code that is requested or make edits if they are requested.\n${text.substring(0, 4000)}`
+					"content": `${fileEditInfo} Comments and documentation should be written in English. 
+						Write only the code that is requested or make edits if they are requested.${nl}${text.substring(0, maxCodeReference)}`
 				}
 			];
 
@@ -64,6 +72,10 @@ export function activate(context: vscode.ExtensionContext) {
 
 			context.workspaceState.update('vs-ai-coding-helper-by-codeplusdev-messages', messages);
 
+			// Start timer
+			const startTime = Date.now();
+			vscode.window.showInformationMessage(`Code generation request has been sent!`);
+
 			try {
 				const response = await axios.post('https://api.openai.com/v1/chat/completions', {
 					model: gptModel,
@@ -74,11 +86,22 @@ export function activate(context: vscode.ExtensionContext) {
 					}
 				});
 
+				// End timer
+				const endTime = Date.now();
+				const elapsedTime = (endTime - startTime) / 1000; // in seconds
+
+				if (response.status === 200) {
+					// Show notification with elapsed time
+					vscode.window.showInformationMessage(`Code completion generated in ${elapsedTime.toFixed(2)} seconds`);
+				} else {
+					vscode.window.showWarningMessage(`Code generation request failed with status code ${response.status} in ${elapsedTime.toFixed(2)} seconds`);
+				}
+
 				let responseMessage = response.data.choices[0].message.content;
 
 				console.log({ responseMessage });
 
-				const regex = new RegExp(`(.*?)\\s*\`\`\`[a-z]+\\s+([\\s\\S]*?)\\s+\`\`\`\\s*(.*?)`, 'm');
+				const regex = new RegExp(`\\s*([^\`]*)\\s*\`\`\`[a-z]+\\s+([\\s\\S]*?)\\s+\`\`\`\\s*([^\`]*)\\s*`, 'm');
 
 				const matches = responseMessage.match(regex);
 
@@ -87,32 +110,44 @@ export function activate(context: vscode.ExtensionContext) {
 				if (matches && matches.length > 1) {
 					let comments_prev = matches[1] || false;
 					let comments_next = matches[3] || false;
+					let code_block = matches[2] || codeBlock;
 
 					if (comments_prev !== false) {
-						completion += `\n/*\n ${comments_prev} \n*/\n`;
+						completion += `${nl}/*${nl} ${comments_prev} ${nl}*/${nl}`;
 					}
 
-					completion += matches[2];
+					completion += code_block ?? '';
 
 					if (comments_next !== false) {
-						completion += `\n/*\n ${comments_next} \n*/\n`;
+						completion += `${nl}/*${nl} ${comments_next} ${nl}*/${nl}`;
 					}
 				} else {
-					completion = `\n/*\n ${responseMessage} \n*/\n`;
+					completion = `${nl}/*${nl} ${responseMessage} ${nl}*/${nl}`;
 				}
 
-				console.log(completion);
+				completion += nl;
 
-				await editor.edit(editBuilder => {
+				/*
+				 This is the completed code that open the tab: 
+				*/
+				await vscode.window.showTextDocument(editor.document);
+
+				await new Promise( (resolve) => {
+					setTimeout(() => {
+						resolve(true);
+					}, 2000 );
+				});
+
+				await vscode.window.activeTextEditor?.edit(editBuilder => {
 					if (commentLine > 0) {
 						const start = new vscode.Position(commentLine, 0);
 						const end = new vscode.Position(endLine + 1, 0);
 						const range = new vscode.Range(start, end);
 						editBuilder.replace(range, completion);
+						editor.selection = new vscode.Selection(start, end);
 					} else {
 						editBuilder.insert(new vscode.Position(cursor_pos, 0), completion);
 					}
-
 				});
 			} catch (error) {
 				console.error('Error calling OpenAI:', error);

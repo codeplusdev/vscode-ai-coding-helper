@@ -6,6 +6,15 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Release Notes
 
+### 0.0.4 - 9 February 2024
+
+- Added: Line ending support
+- Added: Feedback status messages
+- Added: `maxCodeReference` settings parameter to limit the using system context token
+- Fixed: The error occurring when changing active tab
+- Improved: Request system prompt quality
+- Improved: Overall code quality
+
 ### 0.0.3 (HOTFIX) - 8 February 2024
 
 - Hotfix: Fixed a sorting error that prevented selected text operation.

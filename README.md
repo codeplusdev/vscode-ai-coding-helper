@@ -1,6 +1,6 @@
 # CodePlusDev VS AI Coding Helper README
 
-This is the README for the extension "CodePlusDev VS AI Coding Helper", a powerful tool designed to enhance your coding experience by integrating AI-powered code suggestions directly into Visual Studio Code. This extension leverages OpenAI's GPT services to provide code enhancements or additions based on the context you provide through a dedicated prompt box. This new method allows for a more seamless and efficient way to receive coding suggestions, whether you are improving existing code or starting from scratch.
+"CodePlusDev VS AI Coding Helper" is a powerful tool designed to enhance your coding experience by integrating AI-powered code suggestions directly into Visual Studio Code. This extension leverages OpenAI's GPT services to provide code enhancements or additions based on the context you provide through a dedicated prompt box. This new method allows for a more seamless and efficient way to receive coding suggestions, whether you are improving existing code or starting from scratch.
 
 ## Features
 
@@ -32,6 +32,15 @@ This extension contributes the following settings:
 For the most current list of known issues, please refer to the issues section of the extension's repository.
 
 ## Release Notes
+
+### 0.0.4 - 9 February 2024
+
+- Added: Line ending support
+- Added: Feedback status messages
+- Added: `maxCodeReference` settings parameter to limit the using system context token
+- Fixed: The error occurring when changing active tab
+- Improved: Request system prompt quality
+- Improved: Overall code quality
 
 ### 0.0.3 (HOTFIX) - 8 February 2024
 

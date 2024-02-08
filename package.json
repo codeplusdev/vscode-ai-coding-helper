@@ -32,6 +32,11 @@
           "type": "string",
           "default": "gpt-3.5-turbo",
           "description": "OpenAI API Model name"
+        },
+        "vs-ai-coding-helper-by-codeplusdev.maxCodeReference": {
+          "type": "number",
+          "default": 4000,
+          "description": "Code Reference Character Limit of the Code that will sent to GPT model"
         }
       }
     },
