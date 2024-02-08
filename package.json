@@ -2,7 +2,7 @@
   "name": "vs-ai-coding-helper-by-codeplusdev",
   "displayName": "CodePlusDev VS AI Coding Helper",
   "description": "A Coding helper VS Code plugin that create, analyze or update your code.",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publisher": "CodePlusDev",
   "icon": "images/codeplusdev-ai-coding-helper-icon.png",
   "repository": {
